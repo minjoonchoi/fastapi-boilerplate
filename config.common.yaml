@@ -1,0 +1,79 @@
+# 공통 설정 (모든 환경에서 공유)
+app:
+  name: "FastAPI Boilerplate"
+  
+# API 설정
+api:
+  prefix: "/api"
+  auth:
+    api_key:
+      enabled: true
+      header_name: "Authorization"
+      prefix: "ApiKey "  # API 키 앞에 붙는 prefix (예: "ApiKey your-api-key")
+      key: null  # 각 환경별 설정에서 정의해야 함
+      exclude_patterns:  # API 키 인증에서 제외할 경로 패턴 목록
+        - "/health/**"    # 모든 헬스 체크 관련 경로
+        - "/metrics"      # 메트릭 경로 (정확한 매칭)
+        - "/docs/**"      # Swagger UI 문서 관련 모든 경로
+        - "/redoc/**"     # ReDoc 문서 관련 모든 경로
+        - "/openapi.json" # OpenAPI 스키마 파일 (정확한 매칭)
+    jwt:
+      enabled: true
+      secret_key: "your-secret-key-here" # 이것은 환경 별로 다르게 설정해야 합니다
+      algorithm: "HS256"
+      token_expire_minutes: 30
+      refresh_token_expire_days: 7
+      token_url: "/api/auth/token"
+      exclude_patterns:  # JWT 인증에서 제외할 경로 패턴 목록
+        - "/health/**"
+        - "/metrics"
+        - "/docs/**" 
+        - "/redoc/**"
+        - "/openapi.json"
+        - "/api/auth/token"  # 로그인 엔드포인트
+        - "/api/auth/register"  # 회원가입 엔드포인트
+        - "/api/upload/files"  # 파일 목록 조회
+
+# 로깅 기본 설정
+logging:
+  console: true
+  format: "text"  # 로그 포맷 (text 또는 json)
+  level: "INFO"  # 기본 로그 레벨
+  detailed_format: true  # 상세 로그 포맷 사용 여부
+  
+  # HTTP 요청/응답 로깅 설정
+  http:
+    request_body: true  # HTTP 요청 본문 로깅 여부
+    response_body: true  # HTTP 응답 본문 로깅 여부
+    max_body_length: 1000  # 로깅할 본문 최대 길이
+    exclude_patterns:  # 로깅에서 제외할 경로 패턴
+      - "/health/**"     # 모든 헬스 체크 관련 경로
+      - "/metrics"       # 메트릭 경로 (정확한 매칭)
+      - "/docs/**"       # Swagger UI 문서 관련 모든 경로
+      - "/redoc/**"      # ReDoc 문서 관련 모든 경로
+      - "/openapi.json"  # OpenAPI 스키마 파일 (정확한 매칭)
+      - "/favicon.ico"   # 파비콘 요청 (정확한 매칭)
+    
+    # 민감 정보 필드 (공통)
+    sensitive_fields:
+      - password
+      - token
+      - access_token
+      - refresh_token
+      - secret
+      - authorization
+      - api_key
+      - apikey
+      - password_confirmation
+      - credit_card
+      - card_number
+      - cvv
+      - ssn
+      - social_security
+
+# 파일 업로드 설정
+upload:
+  path: "uploads"  # 업로드 기본 경로
+  max_file_size: 10485760  # 개별 파일 최대 크기 (10MB)
+  max_total_size: 52428800  # 다중 업로드 최대 총 크기 (50MB)
+  allowed_extensions: []  # 빈 배열은 모든 확장자 허용 
