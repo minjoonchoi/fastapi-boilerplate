@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # 개발 환경 앱
+  app-dev:
+    build:
+      context: .
+      args:
+        APP_ENV: dev
+        API_KEY: "${API_KEY:-dev-api-key-for-local-only}"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./logs:/app/logs
+      - ./app:/app/app  # 코드 변경 시 자동 반영을 위한 볼륨
+      - ./main.py:/app/main.py
+      - ./run.py:/app/run.py
+      - ./config.dev.yaml:/app/config.dev.yaml
+      - ./config.common.yaml:/app/config.common.yaml
+    environment:
+      - APP_ENV=dev
+      - PORT=8080
+      - API_KEY=${API_KEY:-dev-api-key-for-local-only}
+  
+  # 테스트 환경 앱
+  app-test:
+    build:
+      context: .
+      args:
+        APP_ENV: test
+        API_KEY: "${API_KEY:-test-api-key-for-local-only}"
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./logs:/app/logs
+    environment:
+      - APP_ENV=test
+      - PORT=8080
+      - API_KEY=${API_KEY:-test-api-key-for-local-only}
+  
+  # 프로덕션 환경 앱
+  app-prod:
+    build:
+      context: .
+      args:
+        APP_ENV: prod
+        API_KEY: "${API_KEY}"
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./logs:/var/log/app
+    environment:
+      - APP_ENV=prod
+      - PORT=8080
+      - API_KEY=${API_KEY}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # Add more environment variables as needed
+    # volumes:
+    #  - ./data:/app/data 

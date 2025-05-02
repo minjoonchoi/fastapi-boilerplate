@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fastapi-boilerplate"
+version = "0.1.0"
+description = "A FastAPI Boilerplate application"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "Minjoon", email = "mj19891226@gmail.com" }
+]
+
+dependencies = [
+    "fastapi==0.115.12",
+    "uvicorn==0.34.2",
+    "pydantic==2.11.4",
+    "python-dotenv==1.1.0",
+    "pyyaml==6.0.1",
+    "aiofiles==24.1.0",
+    "starlette==0.46.2",
+    "typing-extensions==4.13.2",
+    "annotated-types==0.7.0",
+    "anyio==4.9.0",
+    "h11==0.16.0",
+    "certifi==2025.4.26",
+    "httpcore==1.0.9",
+    "httpx==0.28.1",
+    "pydantic-core==2.33.2",
+    "python-multipart==0.0.20",
+    "typing-inspection==0.4.0",
+    "python-jose==3.3.0",
+    "passlib==1.7.4",
+    "bcrypt==4.0.1",
+    "ecdsa>=0.13.3",
+    "pyasn1>=0.4.8",
+    "rsa>=4.8",
+    "six>=1.16.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "black==25.1.0",
+    "isort==6.0.1",
+    "mypy==1.15.0",
+]
+
+[project.scripts]
+run-dev = "run:dev"
+run-prod = "run:prod"
+run-test = "run:test"
+
+[tool.setuptools]
+packages = ["app"]
+package-dir = {"" = "."}
+
+[tool.setuptools.package-data]
+"app" = ["**/*.py"]
+
+# 충돌 방지를 위한 추가 설정
+[options]
+install_requires = [
+    "python-jose>=3.3.0",
+]
+# jose 패키지와의 충돌 방지
+conflicts = [
+    "jose",
+]
+
+[dependency-groups]
+dev = [
+    "alembic>=1.15.2",
+    "bandit>=1.8.3",
+    "ruff>=0.11.9",
+    "safety>=3.2.9",
+]

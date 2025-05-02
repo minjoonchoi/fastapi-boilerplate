@@ -1,0 +1,38 @@
+# 테스트 환경 설정
+app:
+  env: "test"
+  debug: true
+
+# 로깅 설정 (테스트 환경 특화)
+logging:
+  level: "DEBUG"
+  console: true
+  format: "text"  # 테스트 환경에서는 텍스트 형식 로그 사용
+  
+  file:
+    enabled: false  # 테스트 환경에서는 파일 로깅 비활성화
+    path: "logs/app.test.log"
+  
+  json:
+    enabled: false  # 테스트 환경에서는 JSON 로깅 비활성화
+    file_path: "logs/app.test.json.log"
+  
+  http:
+    request_body: true
+    response_body: true
+    max_body_length: 15000
+    # 공통 설정의 민감 필드 목록을 초기화하고 테스트 환경에만 필요한 필드만 사용
+    sensitive_fields: "__reset__"  # 공통 설정의 민감 필드 목록을 초기화
+
+# 테스트 전용 설정
+test:
+  # 테스트 관련 설정 추가
+  mock_enabled: true  # 모의 서비스 사용 여부
+  temp_dir: "tests/temp"  # 테스트 임시 디렉토리 
+
+# 파일 업로드 설정 재정의
+upload:
+  path: "uploads/test"  # 테스트용 별도 디렉토리
+  max_file_size: 1048576  # 1MB
+  max_total_size: 5242880  # 5MB
+  allowed_extensions: []  # 모든 확장자 허용 

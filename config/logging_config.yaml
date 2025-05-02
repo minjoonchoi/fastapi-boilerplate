@@ -1,0 +1,73 @@
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  standard:
+    format: '%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s'
+  simple:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: standard
+    stream: ext://sys.stdout
+
+loggers:
+  # 루트 로거 설정
+  '': 
+    level: INFO
+    handlers: [console]
+    propagate: false
+  
+  # 자체 애플리케이션 로거
+  app:
+    level: DEBUG
+    handlers: [console]
+    propagate: false
+  
+  # FastAPI 관련 로거
+  fastapi:
+    level: INFO
+    handlers: [console]
+    propagate: false
+  
+  # Uvicorn 관련 로거
+  uvicorn:
+    level: INFO
+    handlers: [console]
+    propagate: false
+  
+  uvicorn.error:
+    level: INFO
+    handlers: [console]
+    propagate: false
+  
+  uvicorn.access:
+    level: INFO
+    handlers: [console]
+    propagate: false
+  
+  # 기타 외부 라이브러리 로거
+  sqlalchemy:
+    level: WARNING
+    handlers: [console]
+    propagate: false
+  
+  httpx:
+    level: WARNING
+    handlers: [console]
+    propagate: false
+  
+  yaml_config:
+    level: INFO
+    handlers: [console]
+    propagate: true
+
+# 환경별 로그 레벨 설정 (애플리케이션에서 참조할 수 있음)
+env_log_levels:
+  dev: DEBUG
+  test: DEBUG
+  stage: INFO
+  prod: WARNING 

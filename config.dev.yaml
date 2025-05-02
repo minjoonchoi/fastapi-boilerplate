@@ -1,0 +1,29 @@
+# 개발 환경 설정
+app:
+  name: "FastAPI Boilerplate"
+  env: "dev"
+  debug: true
+
+# API 설정
+api:
+  auth:
+    api_key:
+      key: null  # API 키는 이제 환경변수로 관리됩니다
+
+# 로깅 설정 (개발 환경 특화)
+logging:
+  level: "DEBUG"  # 개발 환경에서는 DEBUG 레벨 사용
+  format: "json"  # 개발 환경에서는 JSON 형식 로그 사용
+  
+  file:
+    enabled: true
+    path: "logs/app.dev.log"
+  
+  json:
+    enabled: true
+    file_path: "logs/app.dev.json.log"
+  
+  http:
+    request_body: true
+    response_body: true
+    max_body_length: 20000  # 개발 환경에서는 더 큰 값 사용 

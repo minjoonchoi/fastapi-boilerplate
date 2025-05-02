@@ -1,0 +1,29 @@
+# 프로덕션 환경 설정
+app:
+  name: "FastAPI Application"
+  env: "prod"
+  debug: false
+
+# 로깅 설정 (프로덕션 환경 특화)
+logging:
+  level: "WARNING"  # 프로덕션 환경에서는 WARNING 레벨 이상만 로깅
+  format: "json"  # 프로덕션 환경에서는 JSON 형식 로그 사용
+  
+  file:
+    enabled: true
+    path: "logs/app.prod.log"  # 로컬 테스트용 경로
+  
+  json:
+    enabled: true
+    file_path: "logs/app.prod.json.log"  # 로컬 테스트용 경로
+  
+  http:
+    request_body: true
+    response_body: false  # 프로덕션에서는 응답 본문 로깅 비활성화
+    max_body_length: 5000  # 프로덕션에서는 더 작은 크기로 제한
+    # 공통 설정의 민감 필드를 덮어쓰기 위해 프로덕션에 특화된 목록 정의
+    sensitive_fields:
+      - password
+      - token
+      - api_key
+      - credential 
